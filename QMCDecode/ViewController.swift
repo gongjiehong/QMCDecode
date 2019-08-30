@@ -72,7 +72,8 @@ class ViewController: NSViewController {
     }
     
     func loadDefaultPath() {
-        let path = NSHomeDirectory() + "/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iQmc/"
+        var path = NSHomeDirectory()
+        path += "/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iQmc/"
         let fileManager = FileManager.default
         do {
             let filesPaths = try fileManager.contentsOfDirectory(atPath: path)
@@ -272,19 +273,23 @@ class ViewController: NSViewController {
     func progressAppend(index: Int, success: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
-            let progress = Double(strongSelf.succeedCount + strongSelf.errorCount + 1) / Double(strongSelf.dataSource.count) * 100.0
-            strongSelf.progressView.doubleValue = progress
-            
             if success {
                 strongSelf.succeedCount += 1
             } else {
                 strongSelf.errorCount += 1
             }
             
-            if strongSelf.succeedCount + strongSelf.errorCount == strongSelf.totalCount {
+            let succeedCount = strongSelf.succeedCount
+            let errorCount = strongSelf.errorCount
+            let totalCount = strongSelf.totalCount
+            let progress = Double(succeedCount + errorCount + 1) / Double(totalCount) * 100.0
+            strongSelf.progressView.doubleValue = progress
+            
+            if succeedCount + errorCount == totalCount {
                 let alert = NSAlert(error: QMCDecodeError.notError)
                 alert.alertStyle = .informational
-                alert.messageText = "All done \n Success: \(strongSelf.totalCount - strongSelf.errorCount), Failed: \(strongSelf.errorCount)"
+                let messageText = "All done \nSuccess: \(totalCount - errorCount), Failed: \(errorCount)"
+                alert.messageText = messageText
                 alert.icon = NSImage(named: NSImage.Name("Success"))
                 alert.beginSheetModal(for: strongSelf.view.window!, completionHandler: { (response) in
                     
