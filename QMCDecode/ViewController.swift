@@ -159,8 +159,6 @@ class ViewController: NSViewController {
         
         let coreCount = ProcessInfo().processorCount
         
-        print(CACurrentMediaTime())
-        
         for index in 0..<dataSource.count {
             let queue = queueArray[index % coreCount]
             queue.async {
@@ -174,7 +172,7 @@ class ViewController: NSViewController {
         var result = [DispatchQueue]()
         let coreCount = ProcessInfo().processorCount
         for index in 0..<coreCount {
-            result.append(DispatchQueue(label: "QMCDecode.Convert.Queue\(index)", qos: DispatchQoS.default))
+            result.append(DispatchQueue(label: "QMCDecode.Convert.Queue\(index)", qos: DispatchQoS.utility))
         }
         return result
     }()
@@ -187,6 +185,7 @@ class ViewController: NSViewController {
     
     var succeedCount: Int = 0
     
+    /// buffer 1MB
     let bufferSize: Int = 10_240
     
     var decoder: QMCDecoder = QMCDecoder()
@@ -273,7 +272,8 @@ class ViewController: NSViewController {
     func progressAppend(index: Int, success: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.progressView.doubleValue = Double(strongSelf.succeedCount + strongSelf.errorCount + 1) / Double(strongSelf.dataSource.count) * 100.0
+            let progress = Double(strongSelf.succeedCount + strongSelf.errorCount + 1) / Double(strongSelf.dataSource.count) * 100.0
+            strongSelf.progressView.doubleValue = progress
             
             if success {
                 strongSelf.succeedCount += 1
@@ -289,7 +289,6 @@ class ViewController: NSViewController {
                 alert.beginSheetModal(for: strongSelf.view.window!, completionHandler: { (response) in
                     
                 })
-                print(CACurrentMediaTime())
             }
         }
     }
