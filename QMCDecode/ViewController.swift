@@ -12,6 +12,8 @@ enum QMCDecodeError: Error {
     case inputFileIsInvalid
     case outputDirectoryIsInvalid
     case decodeFailed
+    case readFileToStreamFailed
+    case outputFileStreamInvalid
     case notError
 }
 
@@ -142,7 +144,6 @@ class ViewController: NSViewController {
     }
     
     @objc func startConvert(_ sender: Any) {
-        
         if dataSource.count == 0 {
             let alert = NSAlert(error: QMCDecodeError.inputFileIsInvalid)
             alert.messageText = "Invalid data to be converted"
@@ -152,11 +153,31 @@ class ViewController: NSViewController {
             })
         }
         
-        // 串行队列，每次只处理一个，避免内存爆炸，可使用filestrem解决内存问题，但是我懒得写
-        DispatchQueue(label: "convert").async {
-            self.convertMusic(index: 0)
+        errorCount = 0
+        
+        succeedCount = 0
+        
+        let coreCount = ProcessInfo().processorCount
+        
+        print(CACurrentMediaTime())
+        
+        for index in 0..<dataSource.count {
+            let queue = queueArray[index % coreCount]
+            queue.async {
+                self.convertMusic(index: index)
+            }
         }
     }
+    
+    /// 根据CPU物理核心数组装队列，尽量跑死CPU
+    lazy var queueArray: [DispatchQueue] = {
+        var result = [DispatchQueue]()
+        let coreCount = ProcessInfo().processorCount
+        for index in 0..<coreCount {
+            result.append(DispatchQueue(label: "QMCDecode.Convert.Queue\(index)", qos: DispatchQoS.default))
+        }
+        return result
+    }()
     
     var totalCount: Int {
         return dataSource.count
@@ -164,55 +185,111 @@ class ViewController: NSViewController {
     
     var errorCount: Int = 0
     
+    var succeedCount: Int = 0
+    
+    let bufferSize: Int = 10_240
+    
+    var decoder: QMCDecoder = QMCDecoder()
+    
     func convertMusic(index: Int) {
-        do {
-            let url = dataSource[index]
-            let data = try Data(contentsOf: url)
-            
-            let decoder = QMCDecoder()
-            let result = decoder.qmcCryptoTransform(data: data, offset: 0, size: data.count)
-            
-            
-            var outputURL = outputFolderURL
-            
-            switch url.pathExtension.lowercased() {
-            case "qmcflac":
-                outputURL.appendPathComponent(url.lastPathComponent)
-                outputURL.deletePathExtension()
-                outputURL.appendPathExtension("flac")
-                break
-            case "qmc0", "qmc3":
-                outputURL.appendPathComponent(url.lastPathComponent)
-                outputURL.deletePathExtension()
-                outputURL.appendPathExtension("mp3")
-                break
-            default:
-                break
+        autoreleasepool {
+            do {
+                let url = dataSource[index]
+                
+                guard let readStream = InputStream(url: url) else {
+                    throw QMCDecodeError.readFileToStreamFailed
+                }
+                readStream.open()
+                defer { readStream.close() }
+                
+                
+                var outputURL = outputFolderURL
+                
+                switch url.pathExtension.lowercased() {
+                case "qmcflac":
+                    outputURL.appendPathComponent(url.lastPathComponent)
+                    outputURL.deletePathExtension()
+                    outputURL.appendPathExtension("flac")
+                    break
+                case "qmc0", "qmc3":
+                    outputURL.appendPathComponent(url.lastPathComponent)
+                    outputURL.deletePathExtension()
+                    outputURL.appendPathExtension("mp3")
+                    break
+                default:
+                    break
+                }
+                
+                if FileManager.default.fileExists(atPath: outputURL.path) {
+                    try FileManager.default.removeItem(at: outputURL)
+                }
+                
+                guard let outputStream = OutputStream(url: outputURL, append: true) else {
+                    throw QMCDecodeError.outputFileStreamInvalid
+                }
+                outputStream.open()
+                defer {
+                    outputStream.close()
+                }
+                
+                var offset: Int = 0
+                
+                while readStream.hasBytesAvailable {
+                    var buffer = [UInt8](repeating: 0, count: bufferSize)
+                    let bytesRead = readStream.read(&buffer, maxLength: bufferSize)
+                    
+                    if let streamError = readStream.streamError {
+                        throw streamError
+                    }
+                    
+                    if bytesRead > 0 {
+                        var readData = Data(buffer)
+                        if buffer.count != bytesRead {
+                            readData = Data(buffer[0..<bytesRead])
+                        }
+                        
+                        let resultData = decoder.qmcCryptoTransform(data: readData,
+                                                                    offset: offset,
+                                                                    size: bytesRead)
+                        _ = resultData.withUnsafeBytes({ (rawBufferPointer: UnsafeRawBufferPointer) -> Int in
+                            let bufferPointer = rawBufferPointer.bindMemory(to: UInt8.self)
+                            return outputStream.write(bufferPointer.baseAddress!, maxLength: bytesRead)
+                        })
+                        
+                        offset += bytesRead
+                    } else {
+                        break
+                    }
+                }
+                
+                self.progressAppend(index: index, success: true)
+            } catch {
+                print(error)
+                self.progressAppend(index: index, success: false)
             }
-            
-            try result.write(to: outputURL)
-            DispatchQueue.main.async {
-                self.progressView.doubleValue = Double(index + 1) / Double(self.dataSource.count) * 100.0
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.progressView.doubleValue = Double(index + 1) / Double(self.dataSource.count) * 100.0
-            }
-            print(error)
-            
-            errorCount += 1
         }
-        if index + 1 < dataSource.count {
-            convertMusic(index: index + 1)
-        } else {
-            DispatchQueue.main.async {
+    }
+    
+    func progressAppend(index: Int, success: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.progressView.doubleValue = Double(strongSelf.succeedCount + strongSelf.errorCount + 1) / Double(strongSelf.dataSource.count) * 100.0
+            
+            if success {
+                strongSelf.succeedCount += 1
+            } else {
+                strongSelf.errorCount += 1
+            }
+            
+            if strongSelf.succeedCount + strongSelf.errorCount == strongSelf.totalCount {
                 let alert = NSAlert(error: QMCDecodeError.notError)
-                alert.messageText = "Success: \(self.totalCount - self.errorCount), Failed: \(self.errorCount)"
-                alert.icon = NSImage(named: NSImage.Name("Success"))
                 alert.alertStyle = .informational
-                alert.beginSheetModal(for: self.view.window!, completionHandler: { (response) in
+                alert.messageText = "All done \n Success: \(strongSelf.totalCount - strongSelf.errorCount), Failed: \(strongSelf.errorCount)"
+                alert.icon = NSImage(named: NSImage.Name("Success"))
+                alert.beginSheetModal(for: strongSelf.view.window!, completionHandler: { (response) in
                     
                 })
+                print(CACurrentMediaTime())
             }
         }
     }

@@ -77,4 +77,8 @@ public class QMCDecoder {
             return privateKey256[index]
         }
     }
+    
+    deinit {
+        print("QMCDecoder deinit")
+    }
 }
