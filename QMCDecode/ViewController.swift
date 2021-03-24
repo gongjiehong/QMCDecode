@@ -24,6 +24,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var inputFilesTable: NSTableView!
     @IBOutlet weak var outputPathButton: NSButton!
     @IBOutlet weak var ouputPathLabel: NSTextField!
+    @IBOutlet weak var currentFolderLabel: NSTextField!
     
     @IBOutlet weak var startButton: NSButton!
     @IBOutlet weak var progressView: NSProgressIndicator!
@@ -87,6 +88,8 @@ class ViewController: NSViewController {
             print(error)
         }
         
+        self.currentFolderLabel.stringValue = path
+        
         self.inputFilesTable.reloadData()
     }
     
@@ -131,6 +134,8 @@ class ViewController: NSViewController {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
+        panel.canCreateDirectories = true
+        
         
         let finded = panel.runModal()
         
@@ -310,9 +315,9 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         switch tableColumn?.title {
-        case "Path":
+        case "路径":
             return dataSource[row].path
-        case "Name":
+        case "歌曲名称":
             return dataSource[row].lastPathComponent
         default:
             return nil

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -662,43 +663,42 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cHF-3K-VKs">
-                                <rect key="frame" x="40" y="460" width="100" height="40"/>
+                                <rect key="frame" x="40" y="440" width="100" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="3CI-8w-5SL"/>
                                     <constraint firstAttribute="width" constant="100" id="cuD-Ld-Nys"/>
                                 </constraints>
-                                <buttonCell key="cell" type="square" title="Choose File" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="Z36-nf-O6b">
+                                <buttonCell key="cell" type="square" title="选择文件夹" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="Z36-nf-O6b">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" size="13" name=".PingFangSC-Regular"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GTQ-RT-wPo">
-                                <rect key="frame" x="820" y="460" width="100" height="40"/>
+                                <rect key="frame" x="800" y="440" width="120" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="WeT-1b-V6C"/>
+                                    <constraint firstAttribute="width" constant="120" id="WeT-1b-V6C"/>
                                     <constraint firstAttribute="height" constant="40" id="d0X-nw-EB4"/>
                                 </constraints>
-                                <buttonCell key="cell" type="square" title="Output Folder" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="6v9-cy-KE4">
+                                <buttonCell key="cell" type="square" title="选择输出文件夹" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="6v9-cy-KE4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" size="13" name=".PingFangSC-Regular"/>
                                 </buttonCell>
                             </button>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yj8-Su-Azy">
-                                <rect key="frame" x="40" y="40" width="620" height="400"/>
+                                <rect key="frame" x="40" y="40" width="620" height="380"/>
                                 <clipView key="contentView" id="af0-80-vJo">
-                                    <rect key="frame" x="1" y="0.0" width="618" height="399"/>
+                                    <rect key="frame" x="1" y="0.0" width="618" height="379"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="poi-Op-jIW" id="dXl-Ou-XJZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="618" height="374"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="618" height="354"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="496" minWidth="40" maxWidth="1000" id="27N-mK-o9W">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Path">
-                                                        <font key="font" metaFont="smallSystem"/>
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="路径">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -710,8 +710,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
                                                 <tableColumn width="116" minWidth="40" maxWidth="1000" id="epV-KH-2cv">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
-                                                        <font key="font" metaFont="smallSystem"/>
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="歌曲名称">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -731,7 +730,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="aJa-pU-LVB">
-                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <rect key="frame" x="604" y="0.0" width="15" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="poi-Op-jIW">
@@ -740,8 +739,8 @@
                                 </tableHeaderView>
                             </scrollView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="88t-yD-duA">
-                                <rect key="frame" x="698" y="423" width="224" height="17"/>
-                                <textFieldCell key="cell" id="djr-OK-Ndc">
+                                <rect key="frame" x="698" y="404" width="224" height="16"/>
+                                <textFieldCell key="cell" alignment="right" id="djr-OK-Ndc">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -753,14 +752,30 @@
                                     <constraint firstAttribute="width" constant="100" id="PhC-KR-REP"/>
                                     <constraint firstAttribute="height" constant="40" id="zvg-uP-wi0"/>
                                 </constraints>
-                                <buttonCell key="cell" type="square" title="Start" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="OX3-Eo-nG4">
+                                <buttonCell key="cell" type="square" title="转换" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="OX3-Eo-nG4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" size="13" name=".PingFangSC-Regular"/>
                                 </buttonCell>
                             </button>
                             <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="azP-fT-FvX">
                                 <rect key="frame" x="40" y="13" width="880" height="20"/>
                             </progressIndicator>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ntC-p9-cru">
+                                <rect key="frame" x="38" y="497" width="260" height="23"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="某音乐QMC*转FLAC或MP3" id="f3M-oY-rDz">
+                                    <font key="font" size="20" name=".PingFangSC-Medium"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYw-ZQ-vx7">
+                                <rect key="frame" x="158" y="452" width="504" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="当前路径：" id="Eod-7s-Csk">
+                                    <font key="font" size="13" name=".PingFangSC-Regular"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="yj8-Su-Azy" secondAttribute="bottom" constant="40" id="12h-eW-baS"/>
@@ -768,20 +783,26 @@
                             <constraint firstAttribute="bottom" secondItem="azP-fT-FvX" secondAttribute="bottom" constant="14" id="63D-xJ-18U"/>
                             <constraint firstItem="yj8-Su-Azy" firstAttribute="top" secondItem="cHF-3K-VKs" secondAttribute="bottom" constant="20" id="9sQ-J0-BSg"/>
                             <constraint firstItem="cHF-3K-VKs" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="40" id="BUa-2P-vTp"/>
+                            <constraint firstItem="dYw-ZQ-vx7" firstAttribute="leading" secondItem="cHF-3K-VKs" secondAttribute="trailing" constant="20" id="BWB-WB-uQQ"/>
+                            <constraint firstItem="ntC-p9-cru" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="Dtm-OB-op4"/>
                             <constraint firstItem="88t-yD-duA" firstAttribute="leading" secondItem="yj8-Su-Azy" secondAttribute="trailing" constant="40" id="IqJ-Wv-Hex"/>
                             <constraint firstAttribute="trailing" secondItem="6LO-Tr-LKV" secondAttribute="trailing" constant="40" id="NFQ-hv-kfa"/>
                             <constraint firstItem="azP-fT-FvX" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="40" id="Qy3-OO-Acd"/>
+                            <constraint firstItem="dYw-ZQ-vx7" firstAttribute="trailing" secondItem="yj8-Su-Azy" secondAttribute="trailing" id="Saz-ao-Mgg"/>
                             <constraint firstItem="yj8-Su-Azy" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="40" id="UN9-MS-Bxw"/>
+                            <constraint firstItem="ntC-p9-cru" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="40" id="Xmy-Bp-21q"/>
                             <constraint firstAttribute="trailing" secondItem="88t-yD-duA" secondAttribute="trailing" constant="40" id="bRP-nO-CJm"/>
                             <constraint firstAttribute="trailing" secondItem="yj8-Su-Azy" secondAttribute="trailing" constant="300" id="bp7-FE-Clb"/>
                             <constraint firstAttribute="trailing" secondItem="GTQ-RT-wPo" secondAttribute="trailing" constant="40" id="caM-QO-iLv"/>
+                            <constraint firstItem="dYw-ZQ-vx7" firstAttribute="centerY" secondItem="cHF-3K-VKs" secondAttribute="centerY" id="dH2-of-kD5"/>
                             <constraint firstItem="GTQ-RT-wPo" firstAttribute="centerY" secondItem="cHF-3K-VKs" secondAttribute="centerY" id="fjr-v7-qUC"/>
                             <constraint firstAttribute="bottom" secondItem="6LO-Tr-LKV" secondAttribute="bottom" constant="40" id="gyg-DN-eHc"/>
                             <constraint firstAttribute="trailing" secondItem="azP-fT-FvX" secondAttribute="trailing" constant="40" id="kPs-Y8-VEV"/>
-                            <constraint firstItem="cHF-3K-VKs" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="40" id="nWH-Vk-4QU"/>
+                            <constraint firstItem="cHF-3K-VKs" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="60" id="nWH-Vk-4QU"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="currentFolderLabel" destination="dYw-ZQ-vx7" id="yhd-f7-EDE"/>
                         <outlet property="inputFilesTable" destination="dXl-Ou-XJZ" id="wsg-kk-70s"/>
                         <outlet property="openFolderButton" destination="cHF-3K-VKs" id="TOW-k7-3fr"/>
                         <outlet property="ouputPathLabel" destination="88t-yD-duA" id="6d7-WB-CkG"/>
