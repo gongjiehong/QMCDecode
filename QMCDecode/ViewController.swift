@@ -105,7 +105,6 @@ class ViewController: NSViewController {
     }
     
     @objc func openInputFolder(_ sender: Any) {
-        
         dataSource.removeAll()
         inputFilesTable.reloadData()
         
@@ -117,11 +116,30 @@ class ViewController: NSViewController {
         let finded = panel.runModal()
         
         if finded == .OK {
+            var directoryArray = [String]()
             for url in panel.urls {
-                if url.pathExtension.lowercased().range(of: "qmc") != nil {
-                    dataSource.append(url)
+                var isDirectory: ObjCBool = ObjCBool(false)
+                FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory)
+                if isDirectory.boolValue == true {
+                    do {
+                        let filesPaths = try FileManager.default.contentsOfDirectory(atPath: url.path)
+                        for filePath in filesPaths {
+                            if filePath.lowercased().range(of: "qmc") != nil {
+                                let fileURL = url.appendingPathComponent(filePath)
+                                dataSource.append(fileURL)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                    directoryArray.append(url.path)
+                } else {
+                    if url.pathExtension.lowercased().range(of: "qmc") != nil {
+                        dataSource.append(url)
+                    }
                 }
             }
+            self.currentFolderLabel.stringValue = directoryArray.joined(separator: "\n")
             inputFilesTable.reloadData()
         } else {
             inputFilesTable.reloadData()
@@ -129,7 +147,6 @@ class ViewController: NSViewController {
     }
     
     @objc func openOutputFolder(_ sender: Any) {
-        
         let panel = NSOpenPanel()
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
