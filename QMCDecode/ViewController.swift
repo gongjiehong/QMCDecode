@@ -169,12 +169,14 @@ class ViewController: NSViewController {
     @objc func startConvert(_ sender: Any) {
         if dataSource.count == 0 {
             let alert = NSAlert(error: QMCDecodeError.inputFileIsInvalid)
-            alert.messageText = "Invalid data to be converted"
+            alert.messageText = "没有可供转换的数据"
             alert.icon = NSImage(named: NSImage.Name())
             alert.beginSheetModal(for: self.view.window!, completionHandler: { (response) in
                 
             })
         }
+        
+        self.startButton.isEnabled = false
         
         errorCount = 0
         
@@ -310,12 +312,13 @@ class ViewController: NSViewController {
             if succeedCount + errorCount == totalCount {
                 let alert = NSAlert(error: QMCDecodeError.notError)
                 alert.alertStyle = .informational
-                let messageText = "All done \nSuccess: \(totalCount - errorCount), Failed: \(errorCount)"
+                let messageText = "转换完成 \n成功: \(totalCount - errorCount), 失败: \(errorCount)"
                 alert.messageText = messageText
                 alert.icon = NSImage(named: NSImage.Name("Success"))
                 alert.beginSheetModal(for: strongSelf.view.window!, completionHandler: { (response) in
                     
                 })
+                self?.startButton.isEnabled = true
             }
         }
     }
