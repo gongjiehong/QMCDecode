@@ -79,7 +79,7 @@ class ViewController: NSViewController {
         do {
             let filesPaths = try fileManager.contentsOfDirectory(atPath: path)
             for filePath in filesPaths {
-                if filePath.range(of: "qmc") != nil {
+                if filePath.range(of: "qmc") != nil || filePath.range(of: "mflac") != nil {
                     let url = URL(fileURLWithPath: path + filePath)
                     dataSource.append(url)
                 }
