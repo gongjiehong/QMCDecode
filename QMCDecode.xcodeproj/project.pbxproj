@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE7B2936283645700051960F /* QMCKeyDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B2935283645700051960F /* QMCKeyDecoder.swift */; };
+		FE7B293D2836500C0051960F /* TeaCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7B293C2836500C0051960F /* TeaCipher.swift */; };
 		FE80112C278541B7008D5667 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE80112B278541B7008D5667 /* Constants.swift */; };
 		FE8BFD0F2313DC490072B33B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BFD0E2313DC490072B33B /* AppDelegate.swift */; };
 		FE8BFD112313DC490072B33B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BFD102313DC490072B33B /* ViewController.swift */; };
@@ -15,6 +17,7 @@
 		FE8BFD222313DC4A0072B33B /* QMCDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BFD212313DC4A0072B33B /* QMCDecodeTests.swift */; };
 		FE8BFD2F2313DCF70072B33B /* QMCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BFD2E2313DCF70072B33B /* QMCipher.swift */; };
 		FE8BFD312313EDBE0072B33B /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BFD302313EDBE0072B33B /* WindowController.swift */; };
+		FE968022278C38E50096F9FB /* QMDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE968021278C38E50096F9FB /* QMDecoder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FE7B2935283645700051960F /* QMCKeyDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QMCKeyDecoder.swift; sourceTree = "<group>"; };
+		FE7B293C2836500C0051960F /* TeaCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaCipher.swift; sourceTree = "<group>"; };
 		FE80112B278541B7008D5667 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FE8BFD0B2313DC490072B33B /* QMCDecode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMCDecode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE8BFD0E2313DC490072B33B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +46,7 @@
 		FE8BFD232313DC4A0072B33B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE8BFD2E2313DCF70072B33B /* QMCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QMCipher.swift; sourceTree = "<group>"; };
 		FE8BFD302313EDBE0072B33B /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		FE968021278C38E50096F9FB /* QMDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QMDecoder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,10 +89,13 @@
 			isa = PBXGroup;
 			children = (
 				FE8BFD0E2313DC490072B33B /* AppDelegate.swift */,
+				FE80112B278541B7008D5667 /* Constants.swift */,
 				FE8BFD302313EDBE0072B33B /* WindowController.swift */,
 				FE8BFD102313DC490072B33B /* ViewController.swift */,
 				FE8BFD2E2313DCF70072B33B /* QMCipher.swift */,
-				FE80112B278541B7008D5667 /* Constants.swift */,
+				FE968021278C38E50096F9FB /* QMDecoder.swift */,
+				FE7B2935283645700051960F /* QMCKeyDecoder.swift */,
+				FE7B293C2836500C0051960F /* TeaCipher.swift */,
 				FE8BFD122313DC4A0072B33B /* Assets.xcassets */,
 				FE8BFD142313DC4A0072B33B /* Main.storyboard */,
 				FE8BFD172313DC4A0072B33B /* Info.plist */,
@@ -210,10 +219,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE7B2936283645700051960F /* QMCKeyDecoder.swift in Sources */,
+				FE7B293D2836500C0051960F /* TeaCipher.swift in Sources */,
 				FE80112C278541B7008D5667 /* Constants.swift in Sources */,
 				FE8BFD112313DC490072B33B /* ViewController.swift in Sources */,
 				FE8BFD312313EDBE0072B33B /* WindowController.swift in Sources */,
 				FE8BFD2F2313DCF70072B33B /* QMCipher.swift in Sources */,
+				FE968022278C38E50096F9FB /* QMDecoder.swift in Sources */,
 				FE8BFD0F2313DC490072B33B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,18 +380,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20210325.144915;
-				DEVELOPMENT_TEAM = SRVW87Y85X;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = QMCDecode/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.4;
 				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cxylg.app.macos.QMCDecode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -390,18 +405,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20210325.144915;
-				DEVELOPMENT_TEAM = SRVW87Y85X;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = QMCDecode/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.4;
 				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = cxylg.app.macos.QMCDecode;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

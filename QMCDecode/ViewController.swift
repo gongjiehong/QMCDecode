@@ -18,8 +18,6 @@ enum QMCDecodeError: Error {
 }
 
 class ViewController: NSViewController {
-
-    
     @IBOutlet weak var openFolderButton: NSButton!
     @IBOutlet weak var inputFilesTable: NSTableView!
     @IBOutlet weak var outputPathButton: NSButton!
@@ -66,7 +64,7 @@ class ViewController: NSViewController {
         startButton.action = #selector(startConvert(_:))
         
         setupTableView()
-        
+
         loadDefaultPath()
 
         ouputPathLabel.stringValue = outputFolderURL.path
@@ -79,7 +77,7 @@ class ViewController: NSViewController {
         do {
             let filesPaths = try fileManager.contentsOfDirectory(atPath: path)
             for filePath in filesPaths {
-                if filePath.range(of: "qmc") != nil || filePath.range(of: "mflac") != nil {
+                if encryptExtDictionary.keys.contains(URL(fileURLWithPath: filePath).pathExtension) {
                     let url = URL(fileURLWithPath: path + filePath)
                     dataSource.append(url)
                 }
@@ -124,7 +122,7 @@ class ViewController: NSViewController {
                     do {
                         let filesPaths = try FileManager.default.contentsOfDirectory(atPath: url.path)
                         for filePath in filesPaths {
-                            if filePath.lowercased().range(of: "qmc") != nil {
+                            if encryptExtDictionary.keys.contains(URL(fileURLWithPath: filePath).pathExtension) {
                                 let fileURL = url.appendingPathComponent(filePath)
                                 dataSource.append(fileURL)
                             }
@@ -134,7 +132,7 @@ class ViewController: NSViewController {
                     }
                     directoryArray.append(url.path)
                 } else {
-                    if url.pathExtension.lowercased().range(of: "qmc") != nil {
+                    if encryptExtDictionary.keys.contains(url.pathExtension.lowercased()) {
                         dataSource.append(url)
                     }
                 }
@@ -187,7 +185,15 @@ class ViewController: NSViewController {
         for index in 0..<dataSource.count {
             let queue = queueArray[index % coreCount]
             queue.async {
-                self.convertMusic(index: index)
+                do {
+                    let decoder = try QMDecoder(originFilePath: self.dataSource[index].path,
+                                                outputDirectory: self.outputFolderURL.path)
+                    try decoder.decryptAndWriteToFile()
+                    self.progressAppend(index: index, success: true)
+                } catch {
+                    self.progressAppend(index: index, success: false)
+                    print(error)
+                }
             }
         }
     }
@@ -209,91 +215,7 @@ class ViewController: NSViewController {
     var errorCount: Int = 0
     
     var succeedCount: Int = 0
-    
-    /// buffer 1MB
-    let bufferSize: Int = 10_240
-    
-    var decoder: QMCDecoder = QMCDecoder()
-    
-    func convertMusic(index: Int) {
-        autoreleasepool {
-            do {
-                let url = dataSource[index]
-                
-                guard let readStream = InputStream(url: url) else {
-                    throw QMCDecodeError.readFileToStreamFailed
-                }
-                readStream.open()
-                defer { readStream.close() }
-                
-                
-                var outputURL = outputFolderURL
-                
-                switch url.pathExtension.lowercased() {
-                case "qmcflac":
-                    outputURL.appendPathComponent(url.lastPathComponent)
-                    outputURL.deletePathExtension()
-                    outputURL.appendPathExtension("flac")
-                    break
-                case "qmc0", "qmc3":
-                    outputURL.appendPathComponent(url.lastPathComponent)
-                    outputURL.deletePathExtension()
-                    outputURL.appendPathExtension("mp3")
-                    break
-                default:
-                    break
-                }
-                
-                if FileManager.default.fileExists(atPath: outputURL.path) {
-                    try FileManager.default.removeItem(at: outputURL)
-                }
-                
-                guard let outputStream = OutputStream(url: outputURL, append: true) else {
-                    throw QMCDecodeError.outputFileStreamInvalid
-                }
-                outputStream.open()
-                defer {
-                    outputStream.close()
-                }
-                
-                var offset: Int = 0
-                
-                while readStream.hasBytesAvailable {
-                    var buffer = [UInt8](repeating: 0, count: bufferSize)
-                    let bytesRead = readStream.read(&buffer, maxLength: bufferSize)
-                    
-                    if let streamError = readStream.streamError {
-                        throw streamError
-                    }
-                    
-                    if bytesRead > 0 {
-                        var readData = Data(buffer)
-                        if buffer.count != bytesRead {
-                            readData = Data(buffer[0..<bytesRead])
-                        }
-                        
-                        let resultData = decoder.qmcCryptoTransform(data: readData,
-                                                                    offset: offset,
-                                                                    size: bytesRead)
-                        _ = resultData.withUnsafeBytes({ (rawBufferPointer: UnsafeRawBufferPointer) -> Int in
-                            let bufferPointer = rawBufferPointer.bindMemory(to: UInt8.self)
-                            return outputStream.write(bufferPointer.baseAddress!, maxLength: bytesRead)
-                        })
-                        
-                        offset += bytesRead
-                    } else {
-                        break
-                    }
-                }
-                
-                self.progressAppend(index: index, success: true)
-            } catch {
-                print(error)
-                self.progressAppend(index: index, success: false)
-            }
-        }
-    }
-    
+
     func progressAppend(index: Int, success: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let strongSelf = self else { return }

@@ -1,6 +1,6 @@
 # QMCDecode
 
-QQ音乐QMC格式转换为普通格式，仅支持macOS，可自动识别到QQ音乐下载目录，默认转换结果存储到~/Music/QMCConvertOutput
+QQ音乐加密格式转换为普通格式，仅支持macOS，可自动识别到QQ音乐下载目录，默认转换结果存储到~/Music/QMCConvertOutput
 
 可自定义需要转换的文件和输出路径
 
@@ -10,7 +10,16 @@ QQ音乐QMC格式转换为普通格式，仅支持macOS，可自动识别到QQ�
 
 * .qmcflac to flac
 * .qmc0 to mp3
+* .qmc2 to ogg
 * .qmc3 to mp3
+* .qmflac to flac
+* .mgg to ogg
+* .mgg1 to ogg
+* .qmcogg to ogg
+* .mflac to flac
+* .mflac0 to flac
+* .bkcmp3 to mp3
+* .bkcflac to flac
 
 ----
 示例
